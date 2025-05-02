@@ -1,115 +1,95 @@
 import streamlit as st
-import random
+import pandas as pd
 
-# ------------------ Streamlit Page Setup ---------------------
-st.set_page_config(page_title="ArtSoul AI – Healing Through Creativity", layout="wide")
-
-# ------------------ Sidebar Navigation -----------------------
-st.sidebar.markdown("<h2 style='color:white;'>Navigation</h2>", unsafe_allow_html=True)
-
-page = st.sidebar.radio(
-    "Go to",
-    ["🏠 Home", "💬 Art Chat AI", "📝 Daily Prompt", "📤 Upload Artwork", "📊 Contact / About"]
+# ---------- PAGE CONFIGURATION ----------
+st.set_page_config(
+    page_title="ArtSoul AI – Healing Through Creativity",
+    layout="wide"
 )
 
-# ------------------ Footer -----------------------
-def footer():
-    st.markdown("---")
-    st.markdown(
-        "<center><i>Art speaks where words are unable to explain.</i><br>"
-        "ArtSoul AI © 2025 | Created by Yaswanth Dasari | Inspire & Create LLC</center>",
-        unsafe_allow_html=True
-    )
+# ---------- PAGE STYLING ----------
+st.markdown(
+    """
+    <style>
+    .main {background-color: #f4f4f9;}
+    .stTabs [role="tab"] {
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+    }
+    .stTabs [role="tab"][aria-selected="true"] {
+        background-color: #a6c1ee;
+        color: black;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# ------------------ Home Page -----------------------
-def show_home():
-    st.title("🎨 Welcome to ArtSoul AI – Healing Through Creativity")
-    st.write("""
-    Welcome to **ArtSoul AI**, your personal art therapy and creativity coach.
-    
-    **About Me:**  
-    Created by **Yaswanth Dasari**  
-    - World Record Holding Artist  
-    - Art Coach  
-    - Founder of Inspire & Create LLC
+# ---------- TITLE ----------
+st.title("🎨 ArtSoul AI – Healing Through Creativity")
+st.write("Created by **Yaswanth Dasari**, World Record Holding Artist, Art Coach, Founder of Inspire & Create LLC.")
+st.write("📧 Email: yaswanth.dasari@slu.edu | 🌐 Website: inspireandcreate.art | 📷 Instagram: @artist_yaswanth")
 
-    **Our Mission:**  
-    At Inspire & Create LLC, we are committed to helping people unlock their creativity and find healing through art. 
-    Our mission is to make art learning and emotional growth accessible to everyone. 
-    Art has the power to change lives, boost mental health, and inspire personal breakthroughs.
-    
-    **What You Can Do Here:**  
-    - Get daily drawing prompts  
-    - Chat with your AI art mentor  
-    - Upload your artwork and track your progress  
-    - Stay inspired and connected with a community of creators
+st.markdown("---")
 
-    **Contact:**  
-    Email: yaswanth.dasari@slu.edu  
-    Website: inspireandcreate.art  
-    Instagram: @artist_yaswanth
-    """)
+# ---------- GOOGLE SHEET LINKS ----------
+pencil_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQv1HdtKDYMyYGVlQGnoX08LzYhzn-WYzHXKqRRKJXnNKUM8K7yTDmnKEct04tn3v-gDGGEqg1JpS3C/pub?output=csv"
+color_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8TPi-64c5U-h_OtGih-Z3FK9nLPx-YG7_7HnlJ3ah77N9LMP7zshs78rc1zS-q1j2R21VnUjKgDqa/pub?output=csv"
 
-    st.success("Your current level: Beginner (Level 1)")
+# ---------- LOAD DATA ----------
+@st.cache_data
+def load_data(sheet_url):
+    return pd.read_csv(sheet_url)
 
-    footer()
+pencil_data = load_data(pencil_sheet)
+color_data = load_data(color_sheet)
 
-# ------------------ Art Chat AI Page -----------------------
-def show_chat():
-    st.title("💬 Talk to Your Art Mentor AI")
-    user_input = st.text_input("Ask a question or share a thought:")
-    if st.button("Ask AI"):
-        st.info("🤖 AI says:")
-        st.write("Hello! I'm your creative guide. Let's overcome art blocks and unlock new ideas together!")
-        st.warning("Note: Real AI chat will be added soon.")
-    footer()
+# ---------- TABS FOR LEVELS ----------
+tab1, tab2 = st.tabs(["✏ Pencil Sketching Levels", "🎨 Color Painting Levels"])
 
-# ------------------ Daily Prompt Page -----------------------
-def show_prompt():
-    st.title("📝 Today's Drawing Prompt")
-    prompts = [
-        "Draw a memory you never want to forget.",
-        "Sketch a feeling you can't describe with words.",
-        "Imagine your dream world and draw it.",
-        "Create a portrait of yourself 10 years in the future.",
-        "Express the concept of hope using only lines and shapes."
-    ]
-    st.success(random.choice(prompts))
-    footer()
+with tab1:
+    st.header("Pencil Sketching 365 Level Plan")
+    st.dataframe(pencil_data, use_container_width=True)
 
-# ------------------ Upload Artwork Page -----------------------
-def show_upload():
-    st.title("📤 Upload Your Artwork")
-    uploaded = st.file_uploader("Choose an image (jpg, jpeg, png)", type=["png", "jpg", "jpeg"])
-    if uploaded:
-        st.image(uploaded, width=400)
-        st.success("Artwork uploaded successfully! AI feedback coming soon.")
-        st.success("Congratulations! You've advanced to Level 2 🎉")
-    footer()
+with tab2:
+    st.header("Color Painting 365 Level Plan")
+    st.dataframe(color_data, use_container_width=True)
 
-# ------------------ Contact/About Page -----------------------
-def show_about():
-    st.title("📊 About ArtSoul AI")
-    st.write("""
-    **ArtSoul AI** empowers artists and individuals through guided creativity, 
-    AI mentorship, and positive emotional support.
+st.markdown("---")
 
-    **Creator:** Yaswanth Dasari  
-    Email: yaswanth.dasari@slu.edu  
-    Website: inspireandcreate.art  
-    Instagram: @artist_yaswanth
-    """)
-    footer()
+# ---------- DAILY PROMPT ----------
+import random
 
-# ------------------ Page Routing -----------------------
-if page == "🏠 Home":
-    show_home()
-elif page == "💬 Art Chat AI":
-    show_chat()
-elif page == "📝 Daily Prompt":
-    show_prompt()
-elif page == "📤 Upload Artwork":
-    show_upload()
-elif page == "📊 Contact / About":
-    show_about()
+prompts = [
+    "Draw a memory you never want to forget.",
+    "Sketch a feeling you can't describe with words.",
+    "Imagine your dream world and draw it.",
+    "Create a portrait of yourself 10 years in the future.",
+    "Illustrate your favorite season as an abstract painting."
+]
+
+st.header("✨ Daily Prompt")
+random.seed(pd.Timestamp.today().day)  # Changes daily
+prompt = random.choice(prompts)
+st.success(f"**Today's Prompt:** {prompt}")
+
+st.markdown("---")
+
+# ---------- ARTWORK UPLOAD ----------
+st.header("📤 Upload Your Artwork")
+uploaded_file = st.file_uploader("Upload an image (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
+
+if uploaded_file:
+    st.image(uploaded_file, caption="Your Uploaded Artwork", use_column_width=True)
+    st.success("✅ Artwork uploaded successfully!")
+
+st.markdown("---")
+
+# ---------- ABOUT ----------
+st.header("About")
+st.write("Created by **Yaswanth Dasari**, World Record Holding Artist, Art Coach, Founder of Inspire & Create LLC.")
+st.write("📧 Email: yaswanth.dasari@slu.edu | 🌐 Website: inspireandcreate.art | 📷 Instagram: @artist_yaswanth")
+
+st.info('"Art speaks where words are unable to explain."')
 
