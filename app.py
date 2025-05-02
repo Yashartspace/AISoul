@@ -33,9 +33,9 @@ st.write("📧 Email: yaswanth.dasari@slu.edu | 🌐 Website: inspireandcreate.a
 
 st.markdown("---")
 
-# ---------- GOOGLE SHEET LINKS ----------
-pencil_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQv1HdtKDYMyYGVlQGnoX08LzYhzn-WYzHXKqRRKJXnNKUM8K7yTDmnKEct04tn3v-gDGGEqg1JpS3C/pub?output=csv"
-color_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8TPi-64c5U-h_OtGih-Z3FK9nLPx-YG7_7HnlJ3ah77N9LMP7zshs78rc1zS-q1j2R21VnUjKgDqa/pub?output=csv"
+# ---------- GOOGLE SHEET CSV LINKS ----------
+pencil_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN6yCv0hKlmEoMH5oLVukyIkip0QvZkx27CqGmvUY7PWz3wwD5xFXOWpIGV6UtIAjqXBBy9eUg_e8B/pub?output=csv"
+color_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQcOMrWVR3Yo9VGpblnoqEjVpVtKXIL8Lotxp9OacnMvAQ7qg8dROBiaDzZGZjyjQKBRtLTxj06zjpN/pub?output=csv"
 
 # ---------- LOAD DATA ----------
 @st.cache_data
