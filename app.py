@@ -41,7 +41,10 @@ color_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQcOMrWVR3Yo9VGpb
 # ---------- LOAD DATA ----------
 @st.cache_data
 def load_data(sheet_url):
-    return pd.read_csv(sheet_url)
+    df = pd.read_csv(sheet_url)
+    # Fix any possible extra spaces in column names
+    df.columns = df.columns.str.strip()
+    return df
 
 pencil_data = load_data(pencil_sheet)
 color_data = load_data(color_sheet)
@@ -56,17 +59,18 @@ with tab1:
     level = st.selectbox("Select Your Current Level (Pencil Sketching)", range(1, 366))
     st.success(f"Your Selected Level: {level} / 365")
 
-    # Show progress bar
     st.progress(level / 365)
 
-    # Show level details
-    row = pencil_data[pencil_data['Level'] == level]
-    if not row.empty:
-        st.write(f"**Skill:** {row.iloc[0]['Skill']}")
-        st.write(f"**Description:** {row.iloc[0]['Description']}")
-        st.write(f"**AI Hint:** {row.iloc[0]['AI Hint']}")
+    if 'Level' in pencil_data.columns:
+        row = pencil_data[pencil_data['Level'] == level]
+        if not row.empty:
+            st.write(f"**Skill:** {row.iloc[0]['Skill']}")
+            st.write(f"**Description:** {row.iloc[0]['Description']}")
+            st.write(f"**AI Hint:** {row.iloc[0]['AI Hint']}")
+        else:
+            st.warning("Level data not found for this level.")
     else:
-        st.warning("Level data not found. Please check your sheet.")
+        st.error("❌ 'Level' column not found in Pencil Sketch sheet. Please check the header.")
 
 # ---------- COLOR PAINTING TAB ----------
 with tab2:
@@ -75,17 +79,18 @@ with tab2:
     level2 = st.selectbox("Select Your Current Level (Color Painting)", range(1, 366))
     st.success(f"Your Selected Level: {level2} / 365")
 
-    # Show progress bar
     st.progress(level2 / 365)
 
-    # Show level details
-    row2 = color_data[color_data['Level'] == level2]
-    if not row2.empty:
-        st.write(f"**Skill:** {row2.iloc[0]['Skill']}")
-        st.write(f"**Description:** {row2.iloc[0]['Description']}")
-        st.write(f"**AI Hint:** {row2.iloc[0]['AI Hint']}")
+    if 'Level' in color_data.columns:
+        row2 = color_data[color_data['Level'] == level2]
+        if not row2.empty:
+            st.write(f"**Skill:** {row2.iloc[0]['Skill']}")
+            st.write(f"**Description:** {row2.iloc[0]['Description']}")
+            st.write(f"**AI Hint:** {row2.iloc[0]['AI Hint']}")
+        else:
+            st.warning("Level data not found for this level.")
     else:
-        st.warning("Level data not found. Please check your sheet.")
+        st.error("❌ 'Level' column not found in Color Painting sheet. Please check the header.")
 
 st.markdown("---")
 
@@ -99,7 +104,6 @@ prompts = [
 ]
 
 st.header("✨ Daily Prompt")
-# This will change the prompt each day
 random.seed(pd.Timestamp.today().day_of_year)
 prompt = random.choice(prompts)
 st.success(f"**Today's Prompt:** {prompt}")
@@ -122,4 +126,3 @@ st.write("Created by **Yaswanth Dasari**, World Record Holding Artist, Art Coach
 st.write("📧 Email: yaswanth.dasari@slu.edu | 🌐 Website: inspireandcreate.art | 📷 Instagram: @artist_yaswanth")
 
 st.info('"Art speaks where words are unable to explain."')
-
