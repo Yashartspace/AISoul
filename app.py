@@ -121,4 +121,3 @@ st.write("📧 Email: yaswanth.dasari@slu.edu | 🌐 Website: inspireandcreate.a
 
 st.info('"Art speaks where words are unable to explain."')
 
-
