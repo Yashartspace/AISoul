@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import random
 
 # ---------- PAGE CONFIGURATION ----------
 st.set_page_config(
@@ -46,50 +45,22 @@ def load_data(sheet_url):
 pencil_data = load_data(pencil_sheet)
 color_data = load_data(color_sheet)
 
-# ---------- TABS ----------
-tab1, tab2 = st.tabs(["✏ Pencil Sketch Progress", "🎨 Color Painting Progress"])
+# ---------- TABS FOR LEVELS ----------
+tab1, tab2 = st.tabs(["✏ Pencil Sketching Levels", "🎨 Color Painting Levels"])
 
-# ---------- PENCIL SKETCH TAB ----------
 with tab1:
-    st.header("Your Pencil Sketching Progress")
+    st.header("Pencil Sketching 365 Level Plan")
+    st.dataframe(pencil_data, use_container_width=True)
 
-    level = st.selectbox("Select Your Current Level (Pencil Sketching)", range(1, 366))
-    st.success(f"Your Selected Level: {level} / 365")
-
-    # Show progress bar
-    st.progress(level / 365)
-
-    # Show level details
-    row = pencil_data[pencil_data['Level'] == level]
-    if not row.empty:
-        st.write(f"**Skill:** {row.iloc[0]['Skill']}")
-        st.write(f"**Description:** {row.iloc[0]['Description']}")
-        st.write(f"**AI Hint:** {row.iloc[0]['AI Hint']}")
-    else:
-        st.warning("Level data not found.")
-
-# ---------- COLOR PAINTING TAB ----------
 with tab2:
-    st.header("Your Color Painting Progress")
-
-    level2 = st.selectbox("Select Your Current Level (Color Painting)", range(1, 366))
-    st.success(f"Your Selected Level: {level2} / 365")
-
-    # Show progress bar
-    st.progress(level2 / 365)
-
-    # Show level details
-    row2 = color_data[color_data['Level'] == level2]
-    if not row2.empty:
-        st.write(f"**Skill:** {row2.iloc[0]['Skill']}")
-        st.write(f"**Description:** {row2.iloc[0]['Description']}")
-        st.write(f"**AI Hint:** {row2.iloc[0]['AI Hint']}")
-    else:
-        st.warning("Level data not found.")
+    st.header("Color Painting 365 Level Plan")
+    st.dataframe(color_data, use_container_width=True)
 
 st.markdown("---")
 
 # ---------- DAILY PROMPT ----------
+import random
+
 prompts = [
     "Draw a memory you never want to forget.",
     "Sketch a feeling you can't describe with words.",
@@ -99,6 +70,7 @@ prompts = [
 ]
 
 st.header("✨ Daily Prompt")
+random.seed(pd.Timestamp.today().day)  # Changes daily
 prompt = random.choice(prompts)
 st.success(f"**Today's Prompt:** {prompt}")
 
