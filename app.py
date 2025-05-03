@@ -66,7 +66,7 @@ with tab1:
         st.write(f"**Description:** {row.iloc[0]['Description']}")
         st.write(f"**AI Hint:** {row.iloc[0]['AI Hint']}")
     else:
-        st.warning("Level data not found.")
+        st.warning("Level data not found. Please check your sheet.")
 
 # ---------- COLOR PAINTING TAB ----------
 with tab2:
@@ -85,7 +85,7 @@ with tab2:
         st.write(f"**Description:** {row2.iloc[0]['Description']}")
         st.write(f"**AI Hint:** {row2.iloc[0]['AI Hint']}")
     else:
-        st.warning("Level data not found.")
+        st.warning("Level data not found. Please check your sheet.")
 
 st.markdown("---")
 
@@ -99,6 +99,8 @@ prompts = [
 ]
 
 st.header("✨ Daily Prompt")
+# This will change the prompt each day
+random.seed(pd.Timestamp.today().day_of_year)
 prompt = random.choice(prompts)
 st.success(f"**Today's Prompt:** {prompt}")
 
