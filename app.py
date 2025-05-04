@@ -42,6 +42,7 @@ color_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQcOMrWVR3Yo9VGpb
 @st.cache_data
 def load_data(sheet_url):
     df = pd.read_csv(sheet_url)
+    # Fix any possible extra spaces in column names
     df.columns = df.columns.str.strip()
     return df
 
@@ -109,33 +110,13 @@ st.success(f"**Today's Prompt:** {prompt}")
 
 st.markdown("---")
 
-# ---------- ARTWORK UPLOAD & EVALUATION ----------
+# ---------- ARTWORK UPLOAD ----------
 st.header("📤 Upload Your Artwork")
 uploaded_file = st.file_uploader("Upload an image (jpg, jpeg, png)", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
     st.image(uploaded_file, caption="Your Uploaded Artwork", use_column_width=True)
     st.success("✅ Artwork uploaded successfully!")
-
-    # ---------- Mock Evaluation ----------
-    st.subheader("🎯 AI Evaluation Result")
-    score = random.randint(70, 95)
-    st.info(f"Your artwork received a score of **{score}%**")
-
-    if score >= 80:
-        st.success("✅ Excellent work! You may proceed to the next level.")
-    else:
-        st.warning("❗ Please practice this level again before proceeding.")
-
-st.markdown("---")
-
-# ---------- ARTSOUL AI CHATBOT ----------
-st.header("🤖 ArtSoul AI Chatbot")
-
-user_input = st.text_input("Ask ArtSoul AI anything about your art journey:")
-
-if user_input:
-    st.write("🧠 ArtSoul AI:", "I'm here to guide you! Currently, this is a demo chatbot. Soon, I'll provide real-time feedback and support!")
 
 st.markdown("---")
 
@@ -145,3 +126,4 @@ st.write("Created by **Yaswanth Dasari**, World Record Holding Artist, Art Coach
 st.write("📧 Email: yaswanth.dasari@slu.edu | 🌐 Website: inspireandcreate.art | 📷 Instagram: @artist_yaswanth")
 
 st.info('"Art speaks where words are unable to explain."')
+
