@@ -1,6 +1,43 @@
 import streamlit as st
 import pandas as pd
 import random
+import requests
+
+# --- initialize chat history ---
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+st.header("🤖 ArtSoul AI Chatbot")
+user_input = st.text_input("Ask ArtSoul AI anything about your art journey:")
+
+if user_input:
+    # add user message
+    st.session_state.history.append({"role":"user","content":user_input})
+
+    # prepare API call
+    payload = {
+        "model":"gpt-4",
+        "messages": st.session_state.history
+    }
+    resp = requests.post(
+        "https://api.openai.com/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {st.secrets['openai']['api_key']}",
+            "Content-Type": "application/json"
+        },
+        json=payload
+    )
+    bot_msg = resp.json()["choices"][0]["message"]["content"]
+
+    # add assistant response
+    st.session_state.history.append({"role":"assistant","content":bot_msg})
+
+# render the conversation
+for msg in st.session_state.history:
+    if msg["role"] == "user":
+        st.markdown(f"**You:** {msg['content']}")
+    else:
+        st.markdown(f"**ArtSoul AI:** {msg['content']}")
 
 # ---------- PAGE CONFIGURATION ----------
 st.set_page_config(
