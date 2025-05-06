@@ -35,36 +35,35 @@ st.write("📧 Email: yaswanth.dasari@slu.edu • 🌐 Website: inspireandcreate
 st.markdown("---")
 
 # ---------- ARTSOUL AI CHATBOT ----------
-if "history" not in st.session_state:
-    st.session_state.history = []
-
-st.subheader("🤖 ArtSoul AI Chatbot")
+# ArtSoul AI Chatbot Section
+st.header("🤖 ArtSoul AI Chatbot")
 user_input = st.text_input("Ask ArtSoul AI anything about your art journey:")
 
 if user_input:
+    # Add user message
     st.session_state.history.append({"role": "user", "content": user_input})
-    payload = {
-        "model": "gpt-4",
-        "messages": st.session_state.history
-    }
-    resp = requests.post(
-        "https://api.openai.com/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {st.secrets['openai']['api_key']}",
-            "Content-Type": "application/json"
-        },
-        json=payload
-    )
-    bot_msg = resp.json()["choices"][0]["message"]["content"]
-    st.session_state.history.append({"role": "assistant", "content": bot_msg})
 
+    # Make OpenAI API call
+    import openai
+
+    openai.api_key = st.secrets["openai"]["api_key"]
+
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",  # or "gpt-4" if you have access
+        messages=st.session_state.history
+    )
+
+    bot_reply = response.choices[0].message['content']
+
+    # Add assistant message
+    st.session_state.history.append({"role": "assistant", "content": bot_reply})
+
+# Render chat history
 for msg in st.session_state.history:
     if msg["role"] == "user":
         st.markdown(f"**You:** {msg['content']}")
     else:
         st.markdown(f"**ArtSoul AI:** {msg['content']}")
-
-st.markdown("---")
 
 # ---------- GOOGLE SHEET CSV LINKS ----------
 pencil_sheet = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQN6yCv0hKlmEoMH5oLVukyIkip0QvZkx27CqGmvUY7PWz3wwD5xFXOWpIGV6UtIAjqXBBy9eUg_e8B/pub?output=csv"
