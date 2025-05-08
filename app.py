@@ -5,7 +5,7 @@ import requests
 
 # ---------- PAGE CONFIGURATION ----------
 st.set_page_config(
-    page_title="ArtSoul AI – Healing Through Creativity",
+    page_title="PBAD AI – Healing Through Creativity",
     layout="wide"
 )
 
@@ -29,7 +29,7 @@ st.markdown(
 )
 
 # ---------- TITLE & PROFILE ----------
-st.title("🎨 ArtSoul AI – Healing Through Creativity")
+st.title("🎨 PBAD AI – Healing Through Creativity")
 st.write("Created by **Yaswanth Dasari**, World Record Holding Artist, Art Coach, Founder of Inspire & Create LLC.")
 st.write("📧 Email: yaswanth.dasari@slu.edu • 🌐 Website: inspireandcreate.art • 📷 Instagram: @artist_yaswanth")
 st.markdown("---")
