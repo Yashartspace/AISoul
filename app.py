@@ -36,7 +36,7 @@ st.markdown("---")
 
 # ---------- ARTSOUL AI CHATBOT ----------
 # ArtSoul AI Chatbot Section
-st.header("🤖 ArtSoul AI Chatbot")
+st.header("🤖 PBAD AI Chatbot")
 user_input = st.text_input("Ask ArtSoul AI anything about your art journey:")
 
 if user_input:
